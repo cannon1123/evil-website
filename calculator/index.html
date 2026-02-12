@@ -3,52 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>666 CALCULATOR | CHAOS_HUB</title>
+    <title>Evil Calculator | Chaos Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-black text-red-600 overflow-hidden flex flex-col items-center justify-center min-h-screen">
+<body class="bg-[#050505] text-white min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
-    <div id="glitch-overlay" class="fixed inset-0 pointer-events-none z-50 opacity-0 bg-red-900/20"></div>
+    <div id="comment-bubble" class="mb-6 h-12 text-center text-red-400 font-mono text-sm px-4"></div>
 
-    <div class="relative z-10 w-80 bg-neutral-900 p-4 rounded-3xl border-2 border-red-900 shadow-[0_0_30px_rgba(153,0,0,0.5)]">
-        <div class="mb-4">
+    <div class="calculator-body bg-neutral-900 p-6 rounded-[2rem] border border-white/10 shadow-2xl relative">
+        <div id="screen-glitch" class="absolute inset-0 pointer-events-none rounded-[2rem]"></div>
+        
+        <div class="mb-6 relative">
+            <div id="display-history" class="text-right text-xs text-neutral-500 h-4 font-mono pr-2"></div>
             <input type="text" id="display" readonly 
-                class="w-full bg-black border-b border-red-900 text-right text-3xl p-4 font-mono outline-none text-red-500 shadow-inner" 
+                class="w-full bg-black/50 border-b-2 border-red-900/30 text-right text-4xl p-4 font-mono outline-none text-red-500 rounded-xl" 
                 placeholder="0">
         </div>
 
-        <div class="grid grid-cols-4 gap-2" id="btn-grid">
-            <button class="calc-btn col-span-2 bg-neutral-800" onclick="clearDisplay()">AC</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('/')">/</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('*')">×</button>
+        <div class="grid grid-cols-4 gap-3 relative" id="grid-parent">
+            <button class="btn-evil bg-neutral-800" onclick="pressAC()">AC</button>
+            <button class="btn-evil bg-neutral-800" onclick="append('/')">/</button>
+            <button class="btn-evil bg-neutral-800" onclick="append('*')">×</button>
+            <button class="btn-evil bg-red-900/20 text-red-500" onclick="append('-')">-</button>
             
-            <button class="calc-btn" onclick="append('7')">7</button>
-            <button class="calc-btn" onclick="append('8')">8</button>
-            <button class="calc-btn" onclick="append('9')">9</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('-')">-</button>
+            <button class="btn-evil" onclick="append('7')">7</button>
+            <button class="btn-evil" onclick="append('8')">8</button>
+            <button class="btn-evil" onclick="append('9')">9</button>
+            <button class="btn-evil bg-red-900/20 text-red-500" onclick="append('+')">+</button>
             
-            <button class="calc-btn" onclick="append('4')">4</button>
-            <button class="calc-btn" onclick="append('5')">5</button>
-            <button class="calc-btn" onclick="append('6')">6</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('+')">+</button>
+            <button class="btn-evil" onclick="append('4')">4</button>
+            <button class="btn-evil" onclick="append('5')">5</button>
+            <button class="btn-evil" onclick="append('6')">6</button>
             
-            <button class="calc-btn" onclick="append('1')">1</button>
-            <button class="calc-btn" onclick="append('2')">2</button>
-            <button class="calc-btn" onclick="append('3')">3</button>
-            <button class="calc-btn bg-red-700 text-white row-span-2" id="equal-btn" onclick="calculate()">=</button>
+            <button class="btn-evil" onclick="append('1')">1</button>
+            <button class="btn-evil" onclick="append('2')">2</button>
+            <button class="btn-evil" onclick="append('3')">3</button>
+
+            <button id="equal-btn" class="btn-evil bg-red-600 text-white row-span-2 h-full" onclick="performCalculation()">=</button>
             
-            <button class="calc-btn col-span-2" onclick="append('0')">0</button>
-            <button class="calc-btn" onclick="append('.')">.</button>
+            <button class="btn-evil col-span-2" onclick="append('0')">0</button>
+            <button class="btn-evil" onclick="append('.')">.</button>
         </div>
     </div>
 
-    <div id="meme-container" class="fixed inset-0 flex items-center justify-center pointer-events-none z-40 hidden">
-        <img id="meme-img" src="" class="max-w-full max-h-full">
+    <div id="status-bar" class="mt-8 font-mono text-[10px] text-neutral-600 uppercase tracking-widest">
+        System Status: Operational
     </div>
-
-    <audio id="sfx-scary" src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptoken=110753"></audio>
 
     <script src="script.js"></script>
 </body>
