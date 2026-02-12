@@ -2,10 +2,12 @@ const display = document.getElementById('display');
 const bubble = document.getElementById('comment-bubble');
 const equalBtn = document.getElementById('equal-btn');
 const historyEl = document.getElementById('history');
-const body = document.getElementById('main-body'); 
-const calculatorBody = document.getElementById('calculator-body');
 
-// Nowe elementy
+// --- POPRAWKA: Rozdzielamy body strony od body kalkulatora ---
+const body = document.getElementById('main-body'); // Cała strona (tło)
+const calculatorBody = document.getElementById('calculator-body'); // Sam kalkulator
+
+// --- NOWE ELEMENTY (TEGO BRAKOWAŁO) ---
 const popeClock = document.getElementById('pope-clock');
 const swordsOverlay = document.getElementById('swords-overlay');
 const deadPixel = document.getElementById('dead-pixel');
@@ -24,7 +26,7 @@ let escapeCount = 0;
 let evilMode = false;
 let lastResult = null;
 
-// --- LISTA SPECJALNYCH LICZB (STARE + NOWE) ---
+// --- LISTA SPECJALNYCH LICZB ---
 const specialResponses = {
     // STARE
     "69": { text: "nice 😏", action: "normal" },
@@ -99,7 +101,7 @@ const finalHints = `
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
-    helpModal.classList.add('visible'); // Używamy klasy visible z CSS
+    helpModal.classList.add('visible'); 
 }
 
 function closeHelp() {
@@ -157,7 +159,7 @@ function showComment(text) {
     setTimeout(() => { bubble.style.opacity = "0"; }, 3000);
 }
 
-// --- NOWE: FUNKCJA LOSOWYCH ZDARZEŃ ---
+// --- FUNKCJA LOSOWYCH ZDARZEŃ ---
 function triggerRandomEvent() {
     const chance = Math.random();
     
@@ -186,13 +188,15 @@ function triggerRandomEvent() {
     }
     // 3% szans na Martwy Piksel
     else if (chance > 0.03 && chance < 0.06) {
-        deadPixel.style.opacity = '1';
-        setTimeout(() => deadPixel.style.opacity = '0', 5000);
+        if(deadPixel) {
+             deadPixel.style.opacity = '1';
+             setTimeout(() => deadPixel.style.opacity = '0', 5000);
+        }
     }
 }
 
 function append(val) {
-    triggerRandomEvent(); // Losowe zdarzenia
+    triggerRandomEvent(); 
 
     if (currentInput.length > 12 && Math.random() > 0.8) {
         showComment("przestań klikać...");
@@ -225,11 +229,11 @@ function pressAC() {
     
     // RESET WSZYSTKICH TRYBÓW
     document.body.classList.remove('evil-mode');
-    document.body.classList.remove('cream-mode'); // 2137 reset
-    document.body.classList.remove('police-mode'); // 60 reset
+    document.body.classList.remove('cream-mode'); 
+    document.body.classList.remove('police-mode'); 
     document.getElementById('glitch-overlay').style.opacity = "0";
-    popeClock.style.opacity = "0"; 
-    swordsOverlay.style.opacity = "0"; 
+    if(popeClock) popeClock.style.opacity = "0"; 
+    if(swordsOverlay) swordsOverlay.style.opacity = "0"; 
     
     // Reset wizualny
     body.style.transform = "";       
@@ -242,6 +246,7 @@ function pressAC() {
         btn.classList.remove('sucked-in');
         btn.style.transform = '';
         btn.style.opacity = '1';
+        btn.style.pointerEvents = '';
     });       
 }
 
@@ -267,7 +272,7 @@ function resetEqualBtn() {
 function calculate() {
     resetEqualBtn();
 
-    // NOWE: OBSŁUGA CZARNEJ DZIURY (1/0)
+    // OBSŁUGA CZARNEJ DZIURY (1/0)
     if (currentInput === "1/0") {
         display.value = "BLACK HOLE";
         document.querySelectorAll('.btn').forEach((btn, i) => {
@@ -357,19 +362,19 @@ function handleSpecialEffect(key, calculatedResult) {
     const text = effect.text;
 
     switch (effect.action) {
-        case "slow": // 420
+        case "slow": 
             display.value = "...";
             setTimeout(() => { display.value = text; }, 1500);
             break;
-        case "evil": // 666
+        case "evil": 
             triggerEvilMode();
             display.value = text;
             break;
-        case "rotate": // 8008
-            body.style.transform = "rotate(180deg)";
+        case "rotate": 
+            if(body) body.style.transform = "rotate(180deg)";
             display.value = text;
             break;
-        case "scream": // 9000
+        case "scream": 
             display.value = text;
             display.style.fontSize = "3rem";
             break;
@@ -377,7 +382,7 @@ function handleSpecialEffect(key, calculatedResult) {
         // --- NOWE EFEKTY ---
         case "cream": // 2137
             body.classList.add('cream-mode');
-            popeClock.style.opacity = '1';
+            if(popeClock) popeClock.style.opacity = '1';
             display.value = text;
             // Spawn latającej kremówki
             const cake = document.createElement('div');
@@ -388,7 +393,7 @@ function handleSpecialEffect(key, calculatedResult) {
             break;
         
         case "inflation": // 500/800
-            display.value = calculatedResult * 0.8; // Odejmij 20%
+            display.value = calculatedResult * 0.8; 
             showComment("Inflacja: -20%");
             // Spawn monet
             for(let i=0; i<10; i++) {
@@ -411,14 +416,14 @@ function handleSpecialEffect(key, calculatedResult) {
 
         case "sixseven": // 67
             display.value = text;
-            body.style.transform = "scale(1.1)"; // Bass boost
+            body.style.transform = "scale(1.1)"; 
             setTimeout(() => body.style.transform = "scale(1)", 200);
             break;
 
         case "swords": // 1410
-            swordsOverlay.style.opacity = '1';
+            if(swordsOverlay) swordsOverlay.style.opacity = '1';
             display.value = text;
-            setTimeout(() => swordsOverlay.style.opacity = '0', 3000);
+            setTimeout(() => { if(swordsOverlay) swordsOverlay.style.opacity = '0'; }, 3000);
             break;
         // ------------------
 
@@ -428,11 +433,11 @@ function handleSpecialEffect(key, calculatedResult) {
                 display.style.color = '#' + Math.floor(Math.random()*16777215).toString(16);
             }, 100);
             break;
-        case "delay": // 1000
+        case "delay": 
             display.value = "...liczę...";
             setTimeout(() => { display.value = calculatedResult; }, 2000);
             break;
-        case "flip": // 999
+        case "flip": 
              display.style.transform = "scaleY(-1)";
              display.value = "666";
              break;
