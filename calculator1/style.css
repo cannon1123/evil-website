@@ -6,25 +6,26 @@ body {
 /* --- OBUDOWA KALKULATORA --- */
 #calculator-body {
     background-color: #0d0d0d;
-    border: 1px solid #333;
+    border: 1px solid #333; /* Subtelna ramka */
     border-radius: 24px;
+    /* Czerwona poświata dookoła */
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.15); 
 }
 
-/* --- PRZYCISKI --- */
+/* --- PRZYCISKI (Bazowy styl) --- */
 .btn {
     height: 65px;
-    border-radius: 16px;
+    border-radius: 16px; /* Lekko zaokrąglone rogi, ale nie kółka */
     font-size: 1.4rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
-    background-color: #1a1a1a;
-    border: 1px solid #333;
+    background-color: #1a1a1a; /* Bardzo ciemne tło */
+    border: 1px solid #333;   /* Szary obrys */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ff4433;
+    color: #ff4433; /* Czerwono-pomarańczowy tekst */
 }
 
 .btn:hover {
@@ -36,11 +37,22 @@ body {
     transform: scale(0.96);
 }
 
-.btn-num { color: #ff4433; }
-.btn-func { color: #ff4433; font-weight: 700; }
+/* --- Specyficzne kolory --- */
 
+/* Liczby */
+.btn-num {
+    color: #ff4433;
+}
+
+/* Funkcyjne (AC, /, *, -) - na zdjęciu mają ten sam kolor co liczby */
+.btn-func {
+    color: #ff4433; 
+    font-weight: 700;
+}
+
+/* Przycisk Równa się (=) - Czerwone tło, biały tekst */
 .btn-equal {
-    background-color: #b91c1c;
+    background-color: #b91c1c; /* Ciemna czerwień */
     color: white;
     border: 1px solid #b91c1c;
 }
@@ -51,25 +63,35 @@ body {
 }
 
 /* --- UCIEKAJĄCY PRZYCISK --- */
+/* Gdy przycisk ucieka, wyjmujemy go z siatki (fixed) */
 #equal-btn.running {
     position: fixed; 
-    width: 65px;
+    width: 65px; /* Musimy nadać sztywną szerokość, bo traci grid */
     height: 65px;
     z-index: 9999;
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-    border-radius: 50%;
+    border-radius: 50%; /* Zmienia się w kółko jak ucieka */
 }
 
-/* --- TRYB EVIL --- */
+/* --- TRYB EVIL (Pkt 8) --- */
 .evil-mode #calculator-body {
     border-color: red;
     box-shadow: 0 0 60px rgba(255, 0, 0, 0.6);
     animation: shake 0.5s infinite;
 }
 
-.evil-mode .btn { border-color: red; color: red; }
-.evil-mode #display { color: red; font-weight: bold; text-shadow: 0 0 5px red; }
+.evil-mode .btn {
+    border-color: red;
+    color: red;
+}
 
+.evil-mode #display {
+    color: red;
+    font-weight: bold;
+    text-shadow: 0 0 5px red;
+}
+
+/* --- GLITCH & ANIMACJE --- */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -86,10 +108,11 @@ body {
 
 .glitch-active {
     opacity: 0.5 !important;
-    background: repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) 2px, transparent 2px, transparent 4px);
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 0, 0, 0.5),
+        rgba(255, 0, 0, 0.5) 2px,
+        transparent 2px,
+        transparent 4px
+    );
 }
-
-/* --- OKNO MODALNE (HELP) --- */
-#help-modal.flex { display: flex !important; }
-#help-modal.opacity-100 { opacity: 1 !important; }
-#modal-box.scale-100 { transform: scale(1) !important; }
