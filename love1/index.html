@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#ffe4e6] min-h-screen flex flex-col items-center justify-center overflow-hidden font-['Fredoka'] transition-colors duration-1000" id="main-body">
+
+    <div id="name-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl transform scale-100 transition-all">
+            <h2 class="text-2xl text-pink-600 font-bold mb-4">Kto pyta? 🤔</h2>
+            <input type="text" id="name-input" placeholder="Wpisz swoje imię/ksywkę" 
+                   class="w-full p-3 border-2 border-pink-200 rounded-xl mb-4 text-center text-xl outline-none focus:border-pink-500 transition-colors">
+            <button onclick="startGame()" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold hover:bg-pink-600 transition-all shadow-[0_4px_0_rgb(219,39,119)] active:translate-y-[2px] active:shadow-none">
+                JAZDA! 💘
+            </button>
+        </div>
+    </div>
+
+    <div class="container text-center relative z-10 px-4 transition-all duration-500" id="game-container">
+        
+        <div class="mb-8 relative">
+            <div id="msg-bubble" class="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg text-sm text-gray-700 opacity-0 transition-opacity whitespace-nowrap z-20">
+                To boli...
+            </div>
+            <img id="main-image" src="https://media.tenor.com/fTTVgygGDh8AAAAi/bear-kiss-bear-kisses.gif" 
+                 class="w-64 h-64 object-cover mx-auto rounded-xl shadow-2xl transition-all duration-300 hover:scale-105">
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-bold text-[#db2777] mb-8 drop-shadow-sm leading-tight transition-colors" id="question">
+            Zostaniesz moją Walentynką? 💖
+        </h1>
+
+        <div class="flex flex-wrap justify-center items-center gap-6 w-full relative h-32" id="btn-container">
+            <button id="yes-btn" class="bg-[#10b981] hover:bg-[#059669] text-white font-bold py-4 px-10 rounded-full text-xl shadow-[0_5px_0_rgb(4,120,87)] active:shadow-none active:translate-y-[5px] transition-all duration-100 z-20" onclick="acceptLove()">
+                TAK! 😍
+            </button>
+            
+            <button id="no-btn" class="bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold py-4 px-10 rounded-full text-xl shadow-[0_5px_0_rgb(185,28,28)] active:shadow-none active:translate-y-[5px] transition-all duration-300 z-10 relative" onclick="handleNo(event)">
+                Nie 😢
+            </button>
+        </div>
+
+    </div>
+
+    <audio id="sfx-no" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
+    <audio id="sfx-win" src="https://www.myinstants.com/media/sounds/yippee-tbh.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

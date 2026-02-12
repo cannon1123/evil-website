@@ -58,11 +58,12 @@ function handleNo() {
         yesBtn.style.padding = `${yesPadding}rem ${yesPadding * 2}rem`;
     }
 
-    // 3. Zmień obrazek na smutny
+
     const gifIndex = clickCount % sadGifs.length;
     mainImage.src = sadGifs[gifIndex];
 
-    // 4. Przesuń przycisk "NIE" (TELEPORTACJA PO KLIKNIĘCIU)
+    
+// 4. Przesuń przycisk "NIE" (TELEPORTACJA PO KLIKNIĘCIU)
     // Zwiększyłem zakres ruchu do +/- 150px, żeby uciekał dalej
     const x = (Math.random() - 0.5) * 300; 
     const y = (Math.random() - 0.5) * 300;
