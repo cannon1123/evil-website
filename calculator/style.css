@@ -1,51 +1,41 @@
-.calculator-body {
-    width: 320px;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.btn-evil {
+.calc-btn {
     height: 60px;
-    border-radius: 1rem;
-    background: #1a1a1a;
-    border: 1px solid rgba(255,255,255,0.05);
-    font-family: 'Courier New', monospace;
+    border-radius: 15px;
     font-weight: bold;
-    transition: all 0.2s;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.25rem;
+    border: 1px solid #300;
+    transition: all 0.1s ease;
+    background-color: #1a1a1a;
 }
 
-.btn-evil:hover {
-    border-color: rgba(239, 68, 68, 0.5);
-    background: #222;
+.calc-btn:hover {
+    background-color: #300;
+    color: #f00;
+    box-shadow: 0 0 10px #f00;
 }
 
-.btn-evil:active {
-    transform: scale(0.95);
+.cursed {
+    animation: shake 0.2s infinite;
+    color: #ff0000 !important;
+    text-shadow: 0 0 10px #f00;
 }
 
-/* Tryb Hardcore */
-.hardcore-mode {
-    border-color: #ff0000 !important;
-    box-shadow: 0 0 50px rgba(255,0,0,0.3);
-    animation: jitter 0.1s infinite;
-}
-
-@keyframes jitter {
+@keyframes shake {
     0% { transform: translate(0,0); }
-    50% { transform: translate(1px, -1px); }
-    100% { transform: translate(-1px, 1px); }
+    25% { transform: translate(2px, 2px); }
+    50% { transform: translate(-2px, -2px); }
+    75% { transform: translate(2px, -2px); }
+    100% { transform: translate(0,0); }
 }
 
-.glitch-flash {
-    animation: flash 0.2s ease;
+.glitch-active {
+    opacity: 1 !important;
+    animation: flash 0.1s infinite;
 }
 
 @keyframes flash {
-    0% { background: rgba(255,0,0,0.5); }
-    100% { background: transparent; }
-}
-
-#equal-btn.moving {
-    position: fixed;
-    z-index: 100;
-    width: 60px;
+    0% { background-color: rgba(255,0,0,0.2); }
+    50% { background-color: rgba(0,0,0,0.5); }
+    100% { background-color: rgba(255,0,0,0.2); }
 }
