@@ -78,38 +78,36 @@ const finalHints = `
     </ul>
 `;
 
-// --- NAPRAWIONA FUNKCJA OTWIERANIA ---
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
     
-    // KLUCZOWA POPRAWKA: Włączamy klikanie w modal
+    // POKAZYWANIE MODALA + WŁĄCZENIE KLIKANIA
     helpModal.classList.remove('pointer-events-none');
     helpModal.classList.remove('opacity-0');
     helpModal.classList.add('opacity-100');
-    
-    // Skalowanie okienka
     modalBox.classList.add('scale-100');
 }
 
-// --- NAPRAWIONA FUNKCJA ZAMYKANIA ---
 function closeHelp() {
     helpModal.classList.remove('opacity-100');
     helpModal.classList.add('opacity-0');
     modalBox.classList.remove('scale-100');
     
-    // Po animacji (300ms) wyłączamy klikanie, żeby można było używać kalkulatora
+    // BLOKADA KLIKANIA PO ZAMKNIĘCIU (żeby działał kalkulator)
     setTimeout(() => {
         helpModal.classList.add('pointer-events-none');
     }, 300);
 }
 
 function nextHelpStep() {
+    // Efekt znikania tekstu (Pkt 2)
     if (helpStep === 1) {
         modalText.style.opacity = '0';
         setTimeout(() => { modalText.style.opacity = '1'; }, 2000);
     }
 
+    // Efekt zacinającego się przycisku (Pkt 5)
     if (helpStep === 4) {
         modalAction.innerText = "...";
         modalAction.disabled = true;
@@ -127,11 +125,13 @@ function nextHelpStep() {
     if (helpStep < trollSteps.length) {
         updateModal();
     } else {
+        // FINAŁ
         modalTitle.innerText = "KSIĘGA ZAKAZANA";
         modalText.innerHTML = finalHints;
         modalAction.innerText = "ZAMKNIJ (NA WŁASNĄ ODPOWIEDZIALNOŚĆ)";
         modalAction.onclick = closeHelp;
         
+        // Troll na koniec: ustawienie złej liczby
         currentInput = "665"; 
         display.value = "665";
     }
@@ -139,11 +139,14 @@ function nextHelpStep() {
 
 function updateModal() {
     const step = trollSteps[helpStep];
-    // USUNIĘTY LICZNIK 1/10
+    
+    // TYTUŁ BEZ LICZNIKA
     modalTitle.innerText = "OSTRZEŻENIE"; 
+    
     modalText.innerText = step.text;
     modalAction.innerText = step.btn;
     
+    // Kłamstwo (Pkt 6)
     if (helpStep === 5) {
         if (Math.random() > 0.5) modalText.innerText += " (Ta rada jest kłamstwem)";
     }
@@ -151,7 +154,6 @@ function updateModal() {
 
 // Zamknij modal klikając w tło
 helpModal.addEventListener('click', (e) => {
-    // Sprawdzamy czy kliknięto w tło (helpModal), a nie w środek (modalBox)
     if (e.target === helpModal) closeHelp();
 });
 
@@ -196,7 +198,6 @@ function pressAC() {
     document.body.classList.remove('evil-mode');
     document.getElementById('glitch-overlay').style.opacity = "0";
     
-    // Reset efektów wizualnych
     body.style.transform = "";       
     display.style.fontSize = "";     
     display.style.transform = "";    
