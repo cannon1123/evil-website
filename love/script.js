@@ -59,7 +59,7 @@ function handleNo() {
         mainImage.src = sadGifs[gifIndex];
     }
 
-    // 4. Przesuń przycisk "NIE" losowo (żeby trudniej było trafić)
+    // 4. Przesuń przycisk "NIE" losowo żeby trudniej było trafić
     const x = Math.random() * 100 - 50; // Ruch o +/- 50px
     const y = Math.random() * 100 - 50;
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
