@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>666 CALCULATOR | CHAOS_HUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-black text-red-600 overflow-hidden flex flex-col items-center justify-center min-h-screen">
+
+    <div id="glitch-overlay" class="fixed inset-0 pointer-events-none z-50 opacity-0 bg-red-900/20"></div>
+
+    <div class="relative z-10 w-80 bg-neutral-900 p-4 rounded-3xl border-2 border-red-900 shadow-[0_0_30px_rgba(153,0,0,0.5)]">
+        <div class="mb-4">
+            <input type="text" id="display" readonly 
+                class="w-full bg-black border-b border-red-900 text-right text-3xl p-4 font-mono outline-none text-red-500 shadow-inner" 
+                placeholder="0">
+        </div>
+
+        <div class="grid grid-cols-4 gap-2" id="btn-grid">
+            <button class="calc-btn col-span-2 bg-neutral-800" onclick="clearDisplay()">AC</button>
+            <button class="calc-btn bg-neutral-800" onclick="append('/')">/</button>
+            <button class="calc-btn bg-neutral-800" onclick="append('*')">×</button>
+            
+            <button class="calc-btn" onclick="append('7')">7</button>
+            <button class="calc-btn" onclick="append('8')">8</button>
+            <button class="calc-btn" onclick="append('9')">9</button>
+            <button class="calc-btn bg-neutral-800" onclick="append('-')">-</button>
+            
+            <button class="calc-btn" onclick="append('4')">4</button>
+            <button class="calc-btn" onclick="append('5')">5</button>
+            <button class="calc-btn" onclick="append('6')">6</button>
+            <button class="calc-btn bg-neutral-800" onclick="append('+')">+</button>
+            
+            <button class="calc-btn" onclick="append('1')">1</button>
+            <button class="calc-btn" onclick="append('2')">2</button>
+            <button class="calc-btn" onclick="append('3')">3</button>
+            <button class="calc-btn bg-red-700 text-white row-span-2" id="equal-btn" onclick="calculate()">=</button>
+            
+            <button class="calc-btn col-span-2" onclick="append('0')">0</button>
+            <button class="calc-btn" onclick="append('.')">.</button>
+        </div>
+    </div>
+
+    <div id="meme-container" class="fixed inset-0 flex items-center justify-center pointer-events-none z-40 hidden">
+        <img id="meme-img" src="" class="max-w-full max-h-full">
+    </div>
+
+    <audio id="sfx-scary" src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptoken=110753"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
