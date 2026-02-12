@@ -78,26 +78,18 @@ const finalHints = `
     </ul>
 `;
 
+// --- NAPRAWIONE FUNKCJE MODALA ---
+
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
-    
-    // POKAZYWANIE MODALA + WŁĄCZENIE KLIKANIA
-    helpModal.classList.remove('pointer-events-none');
-    helpModal.classList.remove('opacity-0');
-    helpModal.classList.add('opacity-100');
-    modalBox.classList.add('scale-100');
+    // Dodajemy klasę CSS, która wymusza klikalność
+    helpModal.classList.add('visible');
 }
 
 function closeHelp() {
-    helpModal.classList.remove('opacity-100');
-    helpModal.classList.add('opacity-0');
-    modalBox.classList.remove('scale-100');
-    
-    // BLOKADA KLIKANIA PO ZAMKNIĘCIU (żeby działał kalkulator)
-    setTimeout(() => {
-        helpModal.classList.add('pointer-events-none');
-    }, 300);
+    // Usuwamy klasę, modal znika i przestaje blokować
+    helpModal.classList.remove('visible');
 }
 
 function nextHelpStep() {
@@ -131,7 +123,7 @@ function nextHelpStep() {
         modalAction.innerText = "ZAMKNIJ (NA WŁASNĄ ODPOWIEDZIALNOŚĆ)";
         modalAction.onclick = closeHelp;
         
-        // Troll na koniec: ustawienie złej liczby
+        // Troll na koniec
         currentInput = "665"; 
         display.value = "665";
     }
@@ -139,10 +131,8 @@ function nextHelpStep() {
 
 function updateModal() {
     const step = trollSteps[helpStep];
-    
-    // TYTUŁ BEZ LICZNIKA
+    // Brak licznika, zgodnie z prośbą
     modalTitle.innerText = "OSTRZEŻENIE"; 
-    
     modalText.innerText = step.text;
     modalAction.innerText = step.btn;
     
@@ -154,6 +144,7 @@ function updateModal() {
 
 // Zamknij modal klikając w tło
 helpModal.addEventListener('click', (e) => {
+    // Sprawdzamy czy kliknięto w tło (helpModal), a nie w środek (modalBox)
     if (e.target === helpModal) closeHelp();
 });
 
