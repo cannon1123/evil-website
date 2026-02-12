@@ -3,52 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>666 CALCULATOR | CHAOS_HUB</title>
+    <title>Evil Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-black text-red-600 overflow-hidden flex flex-col items-center justify-center min-h-screen">
+<body class="bg-black min-h-screen flex flex-col items-center justify-center overflow-hidden selection:bg-red-900 selection:text-white">
 
-    <div id="glitch-overlay" class="fixed inset-0 pointer-events-none z-50 opacity-0 bg-red-900/20"></div>
+    <div id="comment-bubble" class="h-8 mb-2 text-center text-gray-500 font-mono text-sm opacity-0 transition-opacity duration-500">
+        </div>
 
-    <div class="relative z-10 w-80 bg-neutral-900 p-4 rounded-3xl border-2 border-red-900 shadow-[0_0_30px_rgba(153,0,0,0.5)]">
-        <div class="mb-4">
+    <div id="calculator-body" class="bg-[#1c1c1c] p-5 rounded-[40px] shadow-2xl w-[350px] relative transition-transform duration-300">
+        
+        <div id="glitch-overlay" class="absolute inset-0 rounded-[40px] pointer-events-none z-50 mix-blend-overlay opacity-0"></div>
+
+        <div class="mb-6 px-2 text-right">
+            <div id="history" class="text-gray-500 text-sm h-5 font-mono mb-1"></div>
             <input type="text" id="display" readonly 
-                class="w-full bg-black border-b border-red-900 text-right text-3xl p-4 font-mono outline-none text-red-500 shadow-inner" 
+                class="w-full bg-transparent text-white text-6xl font-light text-right outline-none placeholder-gray-700"
                 placeholder="0">
         </div>
 
-        <div class="grid grid-cols-4 gap-2" id="btn-grid">
-            <button class="calc-btn col-span-2 bg-neutral-800" onclick="clearDisplay()">AC</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('/')">/</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('*')">×</button>
-            
-            <button class="calc-btn" onclick="append('7')">7</button>
-            <button class="calc-btn" onclick="append('8')">8</button>
-            <button class="calc-btn" onclick="append('9')">9</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('-')">-</button>
-            
-            <button class="calc-btn" onclick="append('4')">4</button>
-            <button class="calc-btn" onclick="append('5')">5</button>
-            <button class="calc-btn" onclick="append('6')">6</button>
-            <button class="calc-btn bg-neutral-800" onclick="append('+')">+</button>
-            
-            <button class="calc-btn" onclick="append('1')">1</button>
-            <button class="calc-btn" onclick="append('2')">2</button>
-            <button class="calc-btn" onclick="append('3')">3</button>
-            <button class="calc-btn bg-red-700 text-white row-span-2" id="equal-btn" onclick="calculate()">=</button>
-            
-            <button class="calc-btn col-span-2" onclick="append('0')">0</button>
-            <button class="calc-btn" onclick="append('.')">.</button>
+        <div class="grid grid-cols-4 gap-3">
+            <button class="btn btn-top" onclick="pressAC()">AC</button>
+            <button class="btn btn-top" onclick="toggleSign()">+/-</button>
+            <button class="btn btn-top" onclick="append('%')">%</button>
+            <button class="btn btn-op" onclick="append('/')">÷</button>
+
+            <button class="btn btn-num" onclick="append('7')">7</button>
+            <button class="btn btn-num" onclick="append('8')">8</button>
+            <button class="btn btn-num" onclick="append('9')">9</button>
+            <button class="btn btn-op" onclick="append('*')">×</button>
+
+            <button class="btn btn-num" onclick="append('4')">4</button>
+            <button class="btn btn-num" onclick="append('5')">5</button>
+            <button class="btn btn-num" onclick="append('6')">6</button>
+            <button class="btn btn-op" onclick="append('-')">−</button>
+
+            <button class="btn btn-num" onclick="append('1')">1</button>
+            <button class="btn btn-num" onclick="append('2')">2</button>
+            <button class="btn btn-num" onclick="append('3')">3</button>
+            <button class="btn btn-op" onclick="append('+')">+</button>
+
+            <button class="btn btn-num col-span-2 text-left pl-7" onclick="append('0')">0</button>
+            <button class="btn btn-num" onclick="append('.')">.</button>
+            <button id="equal-btn" class="btn bg-red-600 text-white hover:bg-red-500 active:scale-95 transition-all" onclick="calculate()">=</button>
         </div>
     </div>
 
-    <div id="meme-container" class="fixed inset-0 flex items-center justify-center pointer-events-none z-40 hidden">
-        <img id="meme-img" src="" class="max-w-full max-h-full">
-    </div>
-
-    <audio id="sfx-scary" src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptoken=110753"></audio>
+    <audio id="sfx-glitch"></audio>
 
     <script src="script.js"></script>
 </body>
