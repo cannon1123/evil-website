@@ -89,10 +89,7 @@ body {
     background: repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) 2px, transparent 2px, transparent 4px);
 }
 
-/* --- NAPRAWA KLIKANIA (MODAL) --- */
-#help-modal {
-    pointer-events: none; /* Domyślnie przepuszcza kliknięcia */
-}
-#help-modal.pointer-events-auto {
-    pointer-events: auto; /* Blokuje tylko gdy aktywny */
-}
+/* --- OKNO MODALNE (HELP) --- */
+#help-modal.flex { display: flex !important; }
+#help-modal.opacity-100 { opacity: 1 !important; }
+#modal-box.scale-100 { transform: scale(1) !important; }

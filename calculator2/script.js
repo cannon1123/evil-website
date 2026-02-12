@@ -66,6 +66,7 @@ const trollSteps = [
     { text: "Pokaż podpowiedź (wersja zła).", btn: "DAWAJ TO!" }
 ];
 
+// Finałowe, enigmatyczne podpowiedzi (bez wprost podanych liczb)
 const finalHints = `
     <ul class='text-left text-xs space-y-2 list-disc pl-4 text-gray-400'>
         <li>Liczba bestii otwiera wrota piekła.</li>
@@ -81,29 +82,30 @@ const finalHints = `
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
-    helpModal.classList.add('pointer-events-auto'); // Włączamy klikanie w modal
-    helpModal.classList.remove('opacity-0');
-    helpModal.classList.add('opacity-100');
-    modalBox.classList.add('scale-100');
+    helpModal.classList.remove('hidden');
+    // Mały timeout dla animacji wejścia
+    setTimeout(() => {
+        helpModal.classList.add('opacity-100');
+        modalBox.classList.add('scale-100');
+    }, 10);
 }
 
 function closeHelp() {
     helpModal.classList.remove('opacity-100');
-    helpModal.classList.add('opacity-0');
     modalBox.classList.remove('scale-100');
-    
-    // Wyłączamy interakcję po animacji
     setTimeout(() => {
-        helpModal.classList.remove('pointer-events-auto');
+        helpModal.classList.add('hidden');
     }, 300);
 }
 
 function nextHelpStep() {
+    // Pkt 2: "Dasz radę bez nich" - znika na chwilę
     if (helpStep === 1) {
         modalText.style.opacity = '0';
         setTimeout(() => { modalText.style.opacity = '1'; }, 2000);
     }
 
+    // Pkt 5: "Nie cofniemy tego" - nic się nie dzieje (presja)
     if (helpStep === 4) {
         modalAction.innerText = "...";
         modalAction.disabled = true;
@@ -112,8 +114,13 @@ function nextHelpStep() {
             modalAction.disabled = false;
             helpStep++;
             updateModal();
-        }, 1500); 
+        }, 1500); // Sztuczne opóźnienie
         return;
+    }
+
+    // Pkt 7: Zapisywanie niewiary (fake log)
+    if (helpStep === 6) {
+        console.log("User admitted defeat. Shame level increased.");
     }
 
     helpStep++;
@@ -121,11 +128,14 @@ function nextHelpStep() {
     if (helpStep < trollSteps.length) {
         updateModal();
     } else {
+        // FINAŁ - Pokaż zagadki
         modalTitle.innerText = "KSIĘGA ZAKAZANA";
         modalText.innerHTML = finalHints;
         modalAction.innerText = "ZAMKNIJ (NA WŁASNĄ ODPOWIEDZIALNOŚĆ)";
         modalAction.onclick = closeHelp;
         
+        // Pkt 10: Podpowiedź brzmi sensownie, ale prowadzi do złego wyniku
+        // Po zamknięciu wpisujemy losową złą liczbę
         currentInput = "665"; 
         display.value = "665";
     }
@@ -137,6 +147,7 @@ function updateModal() {
     modalText.innerText = step.text;
     modalAction.innerText = step.btn;
     
+    // Pkt 6: Losowa rada (czasem błędna)
     if (helpStep === 5) {
         if (Math.random() > 0.5) modalText.innerText += " (Ta rada jest kłamstwem)";
     }
@@ -148,7 +159,7 @@ helpModal.addEventListener('click', (e) => {
 });
 
 
-// --- STANDARDOWA LOGIKA KALKULATORA ---
+// --- STANDARDOWA LOGIKA KALKULATORA (Reszta bez zmian) ---
 
 function showComment(text) {
     bubble.innerText = text;
