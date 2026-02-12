@@ -11,30 +11,28 @@
 </head>
 <body class="bg-[#ffe4e6] min-h-screen flex flex-col items-center justify-center overflow-hidden font-['Fredoka']">
 
-    <div class="container text-center relative z-10">
+    <div class="container text-center relative z-10 px-4">
         
         <div class="mb-8">
             <img id="main-image" src="https://media.tenor.com/fTTVgygGDh8AAAAi/bear-kiss-bear-kisses.gif" 
                  class="w-64 h-64 object-cover mx-auto rounded-xl shadow-2xl transition-all duration-300 hover:scale-105">
         </div>
 
-        <h1 class="text-4xl md:text-6xl font-bold text-[#db2777] mb-8 drop-shadow-sm" id="question">
+        <h1 class="text-4xl md:text-6xl font-bold text-[#db2777] mb-8 drop-shadow-sm leading-tight" id="question">
             Zostaniesz moją Walentynką? 💖
         </h1>
 
-        <div class="flex flex-wrap justify-center items-center gap-6" id="btn-container">
-            <button id="yes-btn" class="bg-[#10b981] hover:bg-[#059669] text-white font-bold py-4 px-10 rounded-full text-xl shadow-[0_5px_0_rgb(4,120,87)] active:shadow-none active:translate-y-[5px] transition-all duration-100" onclick="acceptLove()">
+        <div class="flex flex-wrap justify-center items-center gap-6 w-full relative h-20" id="btn-container">
+            <button id="yes-btn" class="bg-[#10b981] hover:bg-[#059669] text-white font-bold py-4 px-10 rounded-full text-xl shadow-[0_5px_0_rgb(4,120,87)] active:shadow-none active:translate-y-[5px] transition-all duration-100 z-20" onclick="acceptLove()">
                 TAK! 😍
             </button>
             
-            <button id="no-btn" class="bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold py-4 px-10 rounded-full text-xl shadow-[0_5px_0_rgb(185,28,28)] active:shadow-none active:translate-y-[5px] transition-all duration-300" onmouseover="handleNo()" onclick="handleNo()">
+            <button id="no-btn" class="bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold py-4 px-10 rounded-full text-xl shadow-[0_5px_0_rgb(185,28,28)] active:shadow-none active:translate-y-[5px] transition-all duration-300 z-10 relative" onclick="handleNo()">
                 Nie 😢
             </button>
         </div>
 
     </div>
-
-    <audio id="love-song" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
     <script src="script.js"></script>
 </body>

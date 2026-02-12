@@ -2,13 +2,12 @@ const yesBtn = document.getElementById('yes-btn');
 const noBtn = document.getElementById('no-btn');
 const question = document.getElementById('question');
 const mainImage = document.getElementById('main-image');
-const audio = document.getElementById('love-song');
 
 let clickCount = 0;
 let yesFontSize = 1.25; // Rozmiar w rem
 let yesPadding = 2.5;   // Padding w rem
 
-// Lista tekstów na przycisk "NIE" (Coraz bardziej zdesperowane)
+// Lista tekstów na przycisk "NIE"
 const noTexts = [
     "Nie 😢",
     "Na pewno?",
@@ -21,10 +20,10 @@ const noTexts = [
     "Nie rób mi tego!",
     "Ok, teraz przesadzasz",
     "Jesteś bez serca!",
-    "Dobra, koniec tego!" // Po tym "Nie" znika albo zamienia się w TAK
+    "Dobra, koniec tego!" 
 ];
 
-// Lista smutnych GIFów (zmieniają się, gdy klikasz NIE)
+// Smutne GIFy
 const sadGifs = [
     "https://media.tenor.com/KoukV5l00GEAAAAi/sad-bear.gif",
     "https://media.tenor.com/1-1M5e5i7yAAAAAi/sad-cry.gif",
@@ -41,50 +40,49 @@ function handleNo() {
     if (clickCount < noTexts.length) {
         noBtn.innerText = noTexts[clickCount];
     } else {
-        // Ostateczność: Przycisk NIE zamienia się w TAK
         noBtn.innerText = "TAK! 😍";
-        noBtn.style.backgroundColor = "#10b981"; // Zielony
-        noBtn.onclick = acceptLove; // Teraz działa jak TAK
+        noBtn.style.backgroundColor = "#10b981";
+        noBtn.onclick = acceptLove;
+        // Reset pozycji, żeby łatwiej było kliknąć
+        noBtn.style.transform = "translate(0, 0)";
+        return;
     }
 
-    // 2. Powiększ przycisk "TAK" (Agresywnie)
-    yesFontSize += 0.5;
-    yesPadding += 0.2;
+    // 2. Powiększ przycisk "TAK"
+    yesFontSize += 0.4; // Trochę wolniejszy wzrost, żeby gra trwała dłużej
     yesBtn.style.fontSize = `${yesFontSize}rem`;
-    yesBtn.style.padding = `${yesPadding}rem ${yesPadding * 2}rem`;
-
-    // 3. Zmień obrazek na smutny (co 3 kliknięcia)
-    if (clickCount % 3 === 0) {
-        const gifIndex = (clickCount / 3) % sadGifs.length;
-        mainImage.src = sadGifs[gifIndex];
+    
+    // Ograniczamy padding, żeby nie rozwaliło ekranu za szybko
+    if(yesPadding < 5) {
+        yesPadding += 0.2;
+        yesBtn.style.padding = `${yesPadding}rem ${yesPadding * 2}rem`;
     }
 
-    // 4. Przesuń przycisk "NIE" losowo żeby trudniej było trafić
-    const x = Math.random() * 100 - 50; // Ruch o +/- 50px
-    const y = Math.random() * 100 - 50;
+    // 3. Zmień obrazek na smutny
+    const gifIndex = clickCount % sadGifs.length;
+    mainImage.src = sadGifs[gifIndex];
+
+    // 4. Przesuń przycisk "NIE" (TELEPORTACJA PO KLIKNIĘCIU)
+    // Zwiększyłem zakres ruchu do +/- 150px, żeby uciekał dalej
+    const x = (Math.random() - 0.5) * 300; 
+    const y = (Math.random() - 0.5) * 300;
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
 }
 
 function acceptLove() {
-    // 1. Zmień wygląd strony na sukces
     mainImage.src = happyGif;
     question.innerText = "Jeeeeej! Wiedziałem! 💖💖💖";
     
-    // Ukryj przyciski
+    // Ukryj przyciski i pokaż komunikat
     document.getElementById('btn-container').innerHTML = `
-        <div class="text-2xl text-pink-600 font-bold mt-4 animate-bounce">
+        <div class="text-2xl text-pink-600 font-bold mt-4 animate-bounce px-4">
             Widzimy się 14 lutego! 😘
         </div>
     `;
 
-    // 2. Odpal konfetti (dużo konfetti)
     launchConfetti();
-
-    // 3. Opcjonalnie: muzyka
-    // audio.play(); 
 }
 
-// Funkcja do konfetti
 function launchConfetti() {
     var duration = 3 * 1000;
     var animationEnd = Date.now() + duration;
