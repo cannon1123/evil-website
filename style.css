@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0a0a0a;
+}
+
+.bg-grid {
+    background-image: radial-gradient(circle at 1px 1px, #333 1px, transparent 0);
+    background-size: 40px 40px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+.animate-spin-slow {
+    animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
