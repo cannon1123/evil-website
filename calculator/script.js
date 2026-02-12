@@ -18,7 +18,7 @@ let escapeCount = 0;
 let evilMode = false;
 let lastResult = null;
 
-// --- TWOJA LISTA 30 PUNKTÓW ---
+// --- TWOJA LISTA 30 PUNKTÓW (MEMOWE LICZBY) ---
 const specialResponses = {
     "69": { text: "nice 😏", action: "normal" },
     "420": { text: "blaze it 🌿", action: "slow" },
@@ -68,38 +68,56 @@ const trollSteps = [
 
 const finalHints = `
     <ul class='text-left text-xs space-y-2 list-disc pl-4 text-gray-400'>
-        <li>Liczba bestii otwiera wrota piekła.</li>
-        <li>Zielona liczba spowalnia czas.</li>
-        <li>Gdy nic podzielisz przez nic, poznasz granice.</li>
-        <li>Obróć kalkulator do góry nogami (cyfry kobiet).</li>
-        <li>Dwa plus dwa to nie zawsze cztery.</li>
-        <li>Over 9000 to krzyk mocy.</li>
-        <li>Nie ufaj liczbie 13.</li>
+<li>Uśmiech pojawia się, gdy liczba ma dwie takie same cyfry.</li> <!-- 69 -->
+<li>Zielona liczba kojarzy się z dymem.</li> <!-- 420 -->
+<li>Wpisz liczbę, którą ludzie łączą z diabłem.</li> <!-- 666 -->
+<li>Jedna liczba uchodzi za pechową.</li> <!-- 13 -->
+<li>Gdy czegoś nie ma, często widzisz ten kod.</li> <!-- 404 -->
+<li>Liczba elitarnych graczy.</li> <!-- 1337 -->
+<li>Ta liczba zawsze brzmi jak odpowiedź na wszystko.</li> <!-- 42 -->
+<li>Odwróć kalkulator, a zobaczysz coś nieoczekiwanego.</li> <!-- 8008 -->
+<li>Gdy wynik jest zbyt duży, wszyscy krzyczą.</li> <!-- 9000 -->
+<li>Liczba idealna dla perfekcjonistów.</li> <!-- 100 -->
+<li>Trzy siódemki wyglądają jak wygrana.</li> <!-- 777 -->
+<li>Im więcej dziewiątek, tym bliżej limitu.</li> <!-- 999 -->
+<li>Najprostsza sekwencja, jaką możesz wpisać.</li> <!-- 123 -->
+<li>Jeszcze prostsza, tylko dłuższa.</li> <!-- 1234 -->
+<li>Stała, którą każdy kojarzy z kołem.</li> <!-- 3.14 -->
+<li>Inna znana stała, ale mniej oczywista.</li> <!-- 2.718 -->
+<li>Podwójny uśmiech wzmacnia efekt.</li> <!-- 69.69 -->
+<li>Połącz zieloną liczbę z uśmiechem.</li> <!-- 420.69 -->
+<li>Liczba, która męczy nawet kalkulator.</li> <!-- 1000 -->
+<li>Za dużo cyfr — system się poddaje.</li> <!-- 9999 -->
+
     </ul>
 `;
-
-// --- NAPRAWIONE FUNKCJE MODALA ---
 
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
-    // Dodajemy klasę CSS, która wymusza klikalność
-    helpModal.classList.add('visible');
+    helpModal.classList.add('pointer-events-auto'); // Włączamy klikanie w modal
+    helpModal.classList.remove('opacity-0');
+    helpModal.classList.add('opacity-100');
+    modalBox.classList.add('scale-100');
 }
 
 function closeHelp() {
-    // Usuwamy klasę, modal znika i przestaje blokować
-    helpModal.classList.remove('visible');
+    helpModal.classList.remove('opacity-100');
+    helpModal.classList.add('opacity-0');
+    modalBox.classList.remove('scale-100');
+    
+    // Wyłączamy interakcję po animacji
+    setTimeout(() => {
+        helpModal.classList.remove('pointer-events-auto');
+    }, 300);
 }
 
 function nextHelpStep() {
-    // Efekt znikania tekstu (Pkt 2)
     if (helpStep === 1) {
         modalText.style.opacity = '0';
         setTimeout(() => { modalText.style.opacity = '1'; }, 2000);
     }
 
-    // Efekt zacinającego się przycisku (Pkt 5)
     if (helpStep === 4) {
         modalAction.innerText = "...";
         modalAction.disabled = true;
@@ -117,13 +135,11 @@ function nextHelpStep() {
     if (helpStep < trollSteps.length) {
         updateModal();
     } else {
-        // FINAŁ
         modalTitle.innerText = "KSIĘGA ZAKAZANA";
         modalText.innerHTML = finalHints;
         modalAction.innerText = "ZAMKNIJ (NA WŁASNĄ ODPOWIEDZIALNOŚĆ)";
         modalAction.onclick = closeHelp;
         
-        // Troll na koniec
         currentInput = "665"; 
         display.value = "665";
     }
@@ -131,12 +147,10 @@ function nextHelpStep() {
 
 function updateModal() {
     const step = trollSteps[helpStep];
-    // Brak licznika, zgodnie z prośbą
-    modalTitle.innerText = "OSTRZEŻENIE"; 
+    modalTitle.innerText = `OSTRZEŻENIE ${helpStep + 1}/10`;
     modalText.innerText = step.text;
     modalAction.innerText = step.btn;
     
-    // Kłamstwo (Pkt 6)
     if (helpStep === 5) {
         if (Math.random() > 0.5) modalText.innerText += " (Ta rada jest kłamstwem)";
     }
@@ -144,7 +158,6 @@ function updateModal() {
 
 // Zamknij modal klikając w tło
 helpModal.addEventListener('click', (e) => {
-    // Sprawdzamy czy kliknięto w tło (helpModal), a nie w środek (modalBox)
     if (e.target === helpModal) closeHelp();
 });
 
@@ -189,6 +202,7 @@ function pressAC() {
     document.body.classList.remove('evil-mode');
     document.getElementById('glitch-overlay').style.opacity = "0";
     
+    // Reset efektów wizualnych
     body.style.transform = "";       
     display.style.fontSize = "";     
     display.style.transform = "";    

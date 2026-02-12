@@ -9,7 +9,6 @@ body {
     border: 1px solid #333;
     border-radius: 24px;
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.15); 
-    z-index: 10; /* Ważne: niżej niż modal */
 }
 
 /* --- PRZYCISKI --- */
@@ -90,27 +89,10 @@ body {
     background: repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) 2px, transparent 2px, transparent 4px);
 }
 
-/* --- NAPRAWA MODALA (KLUCZOWE!) --- */
-
-/* Domyślny stan: ukryty i nieklikalny */
+/* --- NAPRAWA KLIKANIA (MODAL) --- */
 #help-modal {
-    opacity: 0;
-    pointer-events: none; 
-    transition: opacity 0.3s ease;
-    z-index: 99999; /* Zawsze na wierzchu */
+    pointer-events: none; /* Domyślnie przepuszcza kliknięcia */
 }
-
-/* Stan aktywny: widoczny i KLIKALNY */
-#help-modal.visible {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-#modal-box {
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
-}
-
-#help-modal.visible #modal-box {
-    transform: scale(1);
+#help-modal.pointer-events-auto {
+    pointer-events: auto; /* Blokuje tylko gdy aktywny */
 }

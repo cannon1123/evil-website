@@ -10,21 +10,17 @@
 </head>
 <body class="bg-black min-h-screen flex flex-col items-center justify-center overflow-hidden selection:bg-red-900 selection:text-white">
 
-    <button id="help-btn" class="fixed top-6 right-6 w-12 h-12 rounded-full border border-[#333] text-[#444] hover:text-red-500 hover:border-red-500 transition-all z-[50] flex items-center justify-center text-xl font-bold font-mono cursor-pointer bg-black" onclick="startHelpSequence()">
+    <button id="help-btn" class="fixed top-6 right-6 w-12 h-12 rounded-full border border-[#333] text-[#444] hover:text-red-500 hover:border-red-500 transition-all z-40 flex items-center justify-center text-xl font-bold font-mono" onclick="startHelpSequence()">
         ?
     </button>
 
-    <div id="help-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm">
-        <div class="bg-[#111] p-8 rounded-2xl border border-red-900/50 max-w-sm w-full text-center shadow-[0_0_50px_rgba(255,0,0,0.2)]" id="modal-box">
+    <div id="help-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 opacity-0 transition-opacity duration-300 backdrop-blur-sm pointer-events-none">
+        <div class="bg-[#111] p-8 rounded-2xl border border-red-900/50 max-w-sm w-full text-center shadow-[0_0_50px_rgba(255,0,0,0.2)] transform scale-95 transition-transform duration-300" id="modal-box">
             <h2 id="modal-title" class="text-2xl text-red-600 font-mono mb-4 font-bold">POMOC?</h2>
-            
-            <div class="min-h-[60px] flex items-center justify-center mb-8">
-                <p id="modal-text" class="text-gray-400 font-mono text-sm">
-                    Czy na pewno chcesz zobaczyć podpowiedzi?
-                </p>
+            <div id="modal-text" class="text-gray-400 font-mono text-sm mb-8 min-h-[60px] flex items-center justify-center flex-col gap-2">
+                Czy na pewno chcesz zobaczyć podpowiedzi?
             </div>
-
-            <button id="modal-action" class="w-full py-3 rounded bg-red-900/20 text-red-500 border border-red-900 hover:bg-red-600 hover:text-white transition-all font-mono uppercase text-xs tracking-widest cursor-pointer" onclick="nextHelpStep()">
+            <button id="modal-action" class="w-full py-3 rounded bg-red-900/20 text-red-500 border border-red-900 hover:bg-red-600 hover:text-white transition-all font-mono uppercase text-xs tracking-widest" onclick="nextHelpStep()">
                 TAK, CHCĘ
             </button>
         </div>
@@ -32,7 +28,7 @@
 
     <div id="comment-bubble" class="h-8 mb-4 text-center text-red-500 font-mono text-sm opacity-0 transition-opacity duration-500"></div>
 
-    <div id="calculator-body" class="p-6 w-[340px] relative transition-transform duration-300 z-10">
+    <div id="calculator-body" class="p-6 w-[340px] relative transition-transform duration-300">
         
         <div id="glitch-overlay" class="absolute inset-0 rounded-[30px] pointer-events-none z-50 mix-blend-overlay opacity-0"></div>
 
