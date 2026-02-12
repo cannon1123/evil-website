@@ -18,7 +18,7 @@ let escapeCount = 0;
 let evilMode = false;
 let lastResult = null;
 
-// --- TWOJA LISTA 30 PUNKTÓW (MEMOWE LICZBY) ---
+// --- TWOJA LISTA 30 PUNKTÓW ---
 const specialResponses = {
     "69": { text: "nice 😏", action: "normal" },
     "420": { text: "blaze it 🌿", action: "slow" },
@@ -78,23 +78,29 @@ const finalHints = `
     </ul>
 `;
 
+// --- NAPRAWIONA FUNKCJA OTWIERANIA ---
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
-    helpModal.classList.add('pointer-events-auto'); // Włączamy klikanie w modal
+    
+    // KLUCZOWA POPRAWKA: Włączamy klikanie w modal
+    helpModal.classList.remove('pointer-events-none');
     helpModal.classList.remove('opacity-0');
     helpModal.classList.add('opacity-100');
+    
+    // Skalowanie okienka
     modalBox.classList.add('scale-100');
 }
 
+// --- NAPRAWIONA FUNKCJA ZAMYKANIA ---
 function closeHelp() {
     helpModal.classList.remove('opacity-100');
     helpModal.classList.add('opacity-0');
     modalBox.classList.remove('scale-100');
     
-    // Wyłączamy interakcję po animacji
+    // Po animacji (300ms) wyłączamy klikanie, żeby można było używać kalkulatora
     setTimeout(() => {
-        helpModal.classList.remove('pointer-events-auto');
+        helpModal.classList.add('pointer-events-none');
     }, 300);
 }
 
@@ -133,7 +139,8 @@ function nextHelpStep() {
 
 function updateModal() {
     const step = trollSteps[helpStep];
-    modalTitle.innerText = `OSTRZEŻENIE ${helpStep + 1}/10`;
+    // USUNIĘTY LICZNIK 1/10
+    modalTitle.innerText = "OSTRZEŻENIE"; 
     modalText.innerText = step.text;
     modalAction.innerText = step.btn;
     
@@ -144,6 +151,7 @@ function updateModal() {
 
 // Zamknij modal klikając w tło
 helpModal.addEventListener('click', (e) => {
+    // Sprawdzamy czy kliknięto w tło (helpModal), a nie w środek (modalBox)
     if (e.target === helpModal) closeHelp();
 });
 
