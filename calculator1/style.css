@@ -25,7 +25,6 @@ body {
     align-items: center;
     justify-content: center;
     color: #ff4433;
-    position: relative; /* Dla animacji grawitacji */
 }
 
 .btn:hover {
@@ -61,91 +60,16 @@ body {
     border-radius: 50%;
 }
 
-/* ================= NOWE TRYBY ================= */
-
-/* 1. TRYB EVIL (666) */
+/* --- TRYB EVIL --- */
 .evil-mode #calculator-body {
     border-color: red;
     box-shadow: 0 0 60px rgba(255, 0, 0, 0.6);
     animation: shake 0.5s infinite;
 }
+
 .evil-mode .btn { border-color: red; color: red; }
 .evil-mode #display { color: red; font-weight: bold; text-shadow: 0 0 5px red; }
 
-/* 2. TRYB KREMÓWKOWY (2137) */
-.cream-mode {
-    background-color: #f3e5ab !important; /* Kremowy */
-}
-.cream-mode #calculator-body {
-    background-color: #fff9c4;
-    border-color: #fbc02d;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
-}
-.cream-mode .btn {
-    background-color: #fff176;
-    color: #f57f17;
-    border-color: #fbc02d;
-}
-.cream-mode #display {
-    color: #f57f17;
-}
-
-/* 3. TRYB POLICYJNY (60) */
-@keyframes police-flash {
-    0% { background-color: rgba(0, 0, 255, 0.3); }
-    50% { background-color: rgba(255, 0, 0, 0.3); }
-    100% { background-color: rgba(0, 0, 255, 0.3); }
-}
-.police-mode {
-    animation: police-flash 0.5s infinite;
-}
-
-/* ================= ANIMACJE SPECJALNE ================= */
-
-/* CZARNA DZIURA (1/0) */
-@keyframes suck-in {
-    0% { transform: scale(1) rotate(0deg); opacity: 1; }
-    100% { transform: scale(0) rotate(720deg); opacity: 0; }
-}
-.sucked-in {
-    animation: suck-in 1s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045);
-}
-
-/* FLASHBANG (Losowe zdarzenie) */
-@keyframes flashbang-anim {
-    0% { background-color: white; }
-    100% { background-color: black; }
-}
-.flashbang-active {
-    animation: flashbang-anim 2s forwards;
-}
-
-/* ANIMACJA LATANIA DLA KREMÓWKI */
-.flying-object {
-    position: fixed;
-    z-index: 200;
-    pointer-events: none;
-    font-size: 3rem;
-    animation: flyAcross 3s linear infinite;
-}
-@keyframes flyAcross {
-    0% { transform: translateX(-100vw) rotate(0deg); }
-    100% { transform: translateX(100vw) rotate(360deg); }
-}
-
-/* ANIMACJA SPADAJĄCYCH MONET */
-.falling-coin {
-    position: fixed;
-    top: -50px;
-    font-size: 2rem;
-    z-index: 100;
-    animation: dropCoin 2s linear forwards;
-}
-@keyframes dropCoin {
-    to { transform: translateY(110vh) rotate(360deg); }
-}
-
-/* --- GLITCH --- */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -167,19 +91,8 @@ body {
 
 /* --- NAPRAWA KLIKANIA (MODAL) --- */
 #help-modal {
-    opacity: 0;
-    pointer-events: none; 
-    transition: opacity 0.3s ease;
-    z-index: 99999; 
+    pointer-events: none; /* Domyślnie przepuszcza kliknięcia */
 }
-#help-modal.visible {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-#modal-box {
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
-}
-#help-modal.visible #modal-box {
-    transform: scale(1);
+#help-modal.pointer-events-auto {
+    pointer-events: auto; /* Blokuje tylko gdy aktywny */
 }

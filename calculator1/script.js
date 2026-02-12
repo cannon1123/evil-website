@@ -2,13 +2,7 @@ const display = document.getElementById('display');
 const bubble = document.getElementById('comment-bubble');
 const equalBtn = document.getElementById('equal-btn');
 const historyEl = document.getElementById('history');
-const body = document.getElementById('main-body'); 
-const calculatorBody = document.getElementById('calculator-body');
-
-// Nowe elementy
-const popeClock = document.getElementById('pope-clock');
-const swordsOverlay = document.getElementById('swords-overlay');
-const deadPixel = document.getElementById('dead-pixel');
+const body = document.getElementById('calculator-body');
 
 // Zmienne do Modala Pomocy
 const helpModal = document.getElementById('help-modal');
@@ -24,9 +18,8 @@ let escapeCount = 0;
 let evilMode = false;
 let lastResult = null;
 
-// --- LISTA SPECJALNYCH LICZB (STARE + NOWE) ---
+// --- TWOJA LISTA 30 PUNKTÓW (MEMOWE LICZBY) ---
 const specialResponses = {
-    // STARE
     "69": { text: "nice 😏", action: "normal" },
     "420": { text: "blaze it 🌿", action: "slow" },
     "666": { text: "😈 ERROR", action: "evil" },
@@ -52,14 +45,6 @@ const specialResponses = {
     "1000": { text: "zmęczyłem się...", action: "delay" },
     "777": { text: "JACKPOT! (ale wynik zły)", action: "fake_win" },
     "9999": { text: "za dużo", action: "reset" },
-
-    // NOWE (Twoje propozycje)
-    "2137": { text: "Jeszcze jak!", action: "cream" }, 
-    "67": { text: "I'm six seven 😎", action: "sixseven" },    
-    "500": { text: "Daję, ale zabieram", action: "inflation" }, 
-    "800": { text: "Daję, ale zabieram", action: "inflation" }, 
-    "60": { text: "ROZPRUŁEŚ SIĘ!", action: "police" }, 
-    "1410": { text: "Dwa nagie miecze", action: "swords" } 
 };
 
 const comments = [
@@ -83,27 +68,48 @@ const trollSteps = [
 
 const finalHints = `
     <ul class='text-left text-xs space-y-2 list-disc pl-4 text-gray-400'>
-        <li>Papieska godzina zmienia kolory. (NOWE)</li>
-        <li>Podziel 1 przez 0, żeby zobaczyć kosmos. (NOWE)</li>
-        <li>Grunwaldzkie miecze. (NOWE)</li>
-        <li>500 plus rozdaje monety. (NOWE)</li>
-        <li>Sześćdziesiona wzywa bagiety. (NOWE)</li>
-        <li>Six Seven - wiesz o co chodzi. (NOWE)</li>
-        <li>Uśmiech pojawia się, gdy liczba ma dwie takie same cyfry.</li>
-        <li>Zielona liczba kojarzy się z dymem.</li>
-        <li>Wpisz liczbę, którą ludzie łączą z diabłem.</li>
-        <li>Odwróć kalkulator, a zobaczysz coś nieoczekiwanego.</li>
+<li>Uśmiech pojawia się, gdy liczba ma dwie takie same cyfry.</li> <!-- 69 -->
+<li>Zielona liczba kojarzy się z dymem.</li> <!-- 420 -->
+<li>Wpisz liczbę, którą ludzie łączą z diabłem.</li> <!-- 666 -->
+<li>Jedna liczba uchodzi za pechową.</li> <!-- 13 -->
+<li>Gdy czegoś nie ma, często widzisz ten kod.</li> <!-- 404 -->
+<li>Liczba elitarnych graczy.</li> <!-- 1337 -->
+<li>Ta liczba zawsze brzmi jak odpowiedź na wszystko.</li> <!-- 42 -->
+<li>Odwróć kalkulator, a zobaczysz coś nieoczekiwanego.</li> <!-- 8008 -->
+<li>Gdy wynik jest zbyt duży, wszyscy krzyczą.</li> <!-- 9000 -->
+<li>Liczba idealna dla perfekcjonistów.</li> <!-- 100 -->
+<li>Trzy siódemki wyglądają jak wygrana.</li> <!-- 777 -->
+<li>Im więcej dziewiątek, tym bliżej limitu.</li> <!-- 999 -->
+<li>Najprostsza sekwencja, jaką możesz wpisać.</li> <!-- 123 -->
+<li>Jeszcze prostsza, tylko dłuższa.</li> <!-- 1234 -->
+<li>Stała, którą każdy kojarzy z kołem.</li> <!-- 3.14 -->
+<li>Inna znana stała, ale mniej oczywista.</li> <!-- 2.718 -->
+<li>Podwójny uśmiech wzmacnia efekt.</li> <!-- 69.69 -->
+<li>Połącz zieloną liczbę z uśmiechem.</li> <!-- 420.69 -->
+<li>Liczba, która męczy nawet kalkulator.</li> <!-- 1000 -->
+<li>Za dużo cyfr — system się poddaje.</li> <!-- 9999 -->
+
     </ul>
 `;
 
 function startHelpSequence() {
     helpStep = 0;
     updateModal();
-    helpModal.classList.add('visible'); // Używamy klasy visible z CSS
+    helpModal.classList.add('pointer-events-auto'); // Włączamy klikanie w modal
+    helpModal.classList.remove('opacity-0');
+    helpModal.classList.add('opacity-100');
+    modalBox.classList.add('scale-100');
 }
 
 function closeHelp() {
-    helpModal.classList.remove('visible');
+    helpModal.classList.remove('opacity-100');
+    helpModal.classList.add('opacity-0');
+    modalBox.classList.remove('scale-100');
+    
+    // Wyłączamy interakcję po animacji
+    setTimeout(() => {
+        helpModal.classList.remove('pointer-events-auto');
+    }, 300);
 }
 
 function nextHelpStep() {
@@ -111,6 +117,7 @@ function nextHelpStep() {
         modalText.style.opacity = '0';
         setTimeout(() => { modalText.style.opacity = '1'; }, 2000);
     }
+
     if (helpStep === 4) {
         modalAction.innerText = "...";
         modalAction.disabled = true;
@@ -122,7 +129,9 @@ function nextHelpStep() {
         }, 1500); 
         return;
     }
+
     helpStep++;
+
     if (helpStep < trollSteps.length) {
         updateModal();
     } else {
@@ -130,20 +139,24 @@ function nextHelpStep() {
         modalText.innerHTML = finalHints;
         modalAction.innerText = "ZAMKNIJ (NA WŁASNĄ ODPOWIEDZIALNOŚĆ)";
         modalAction.onclick = closeHelp;
-        currentInput = "2137"; 
-        display.value = "2137";
+        
+        currentInput = "665"; 
+        display.value = "665";
     }
 }
 
 function updateModal() {
     const step = trollSteps[helpStep];
-    modalTitle.innerText = "OSTRZEŻENIE"; 
+    modalTitle.innerText = `OSTRZEŻENIE ${helpStep + 1}/10`;
     modalText.innerText = step.text;
     modalAction.innerText = step.btn;
+    
     if (helpStep === 5) {
         if (Math.random() > 0.5) modalText.innerText += " (Ta rada jest kłamstwem)";
     }
 }
+
+// Zamknij modal klikając w tło
 helpModal.addEventListener('click', (e) => {
     if (e.target === helpModal) closeHelp();
 });
@@ -157,43 +170,7 @@ function showComment(text) {
     setTimeout(() => { bubble.style.opacity = "0"; }, 3000);
 }
 
-// --- NOWE: FUNKCJA LOSOWYCH ZDARZEŃ ---
-function triggerRandomEvent() {
-    const chance = Math.random();
-    
-    // 1% szans na Flashbang
-    if (chance < 0.01) {
-        body.classList.add('flashbang-active');
-        setTimeout(() => body.classList.remove('flashbang-active'), 2000);
-        showComment("OCZY BOLĄ?");
-    }
-    // 2% szans na Grawitację (przyciski spadają)
-    else if (chance > 0.01 && chance < 0.03) {
-        document.querySelectorAll('.btn').forEach(btn => {
-            const rot = (Math.random() - 0.5) * 60;
-            const y = Math.random() * 200 + 50;
-            btn.style.transform = `translateY(${y}px) rotate(${rot}deg)`;
-            btn.style.pointerEvents = 'none'; // nie da się klikać jak spadną
-        });
-        showComment("Awaria grawitacji...");
-        // Reset po 3 sek
-        setTimeout(() => {
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.style.transform = '';
-                btn.style.pointerEvents = '';
-            });
-        }, 3000);
-    }
-    // 3% szans na Martwy Piksel
-    else if (chance > 0.03 && chance < 0.06) {
-        deadPixel.style.opacity = '1';
-        setTimeout(() => deadPixel.style.opacity = '0', 5000);
-    }
-}
-
 function append(val) {
-    triggerRandomEvent(); // Losowe zdarzenia
-
     if (currentInput.length > 12 && Math.random() > 0.8) {
         showComment("przestań klikać...");
         return;
@@ -222,27 +199,14 @@ function pressAC() {
         showComment("pamiętam to...");
     }
     resetEqualBtn();
-    
-    // RESET WSZYSTKICH TRYBÓW
     document.body.classList.remove('evil-mode');
-    document.body.classList.remove('cream-mode'); // 2137 reset
-    document.body.classList.remove('police-mode'); // 60 reset
     document.getElementById('glitch-overlay').style.opacity = "0";
-    popeClock.style.opacity = "0"; 
-    swordsOverlay.style.opacity = "0"; 
     
-    // Reset wizualny
+    // Reset efektów wizualnych
     body.style.transform = "";       
     display.style.fontSize = "";     
     display.style.transform = "";    
-    display.style.color = ""; 
-    
-    // Reset przycisków (jeśli była Czarna Dziura)
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.classList.remove('sucked-in');
-        btn.style.transform = '';
-        btn.style.opacity = '1';
-    });       
+    display.style.color = "";        
 }
 
 equalBtn.addEventListener('mouseover', () => {
@@ -267,30 +231,7 @@ function resetEqualBtn() {
 function calculate() {
     resetEqualBtn();
 
-    // NOWE: OBSŁUGA CZARNEJ DZIURY (1/0)
-    if (currentInput === "1/0") {
-        display.value = "BLACK HOLE";
-        document.querySelectorAll('.btn').forEach((btn, i) => {
-            setTimeout(() => {
-                btn.classList.add('sucked-in'); // Klasa CSS wsysania
-            }, i * 50);
-        });
-        // Rozrzucenie przycisków po chwili
-        setTimeout(() => {
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.classList.remove('sucked-in');
-                const x = (Math.random() - 0.5) * 300;
-                const y = (Math.random() - 0.5) * 300;
-                btn.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random()*360}deg)`;
-            });
-            display.value = "ZBIERAJ JE";
-        }, 2000);
-        currentInput = "";
-        return;
-    }
-
     if (currentInput === "666") { triggerEvilMode(); return; }
-    
     if (currentInput.includes('/0')) {
         if (currentInput.includes('0/0')) display.value = "mam granice";
         else display.value = "nie dzisiaj";
@@ -357,82 +298,33 @@ function handleSpecialEffect(key, calculatedResult) {
     const text = effect.text;
 
     switch (effect.action) {
-        case "slow": // 420
+        case "slow":
             display.value = "...";
             setTimeout(() => { display.value = text; }, 1500);
             break;
-        case "evil": // 666
+        case "evil":
             triggerEvilMode();
             display.value = text;
             break;
-        case "rotate": // 8008
+        case "rotate":
             body.style.transform = "rotate(180deg)";
             display.value = text;
             break;
-        case "scream": // 9000
+        case "scream":
             display.value = text;
             display.style.fontSize = "3rem";
             break;
-        
-        // --- NOWE EFEKTY ---
-        case "cream": // 2137
-            body.classList.add('cream-mode');
-            popeClock.style.opacity = '1';
-            display.value = text;
-            // Spawn latającej kremówki
-            const cake = document.createElement('div');
-            cake.innerHTML = '🍰';
-            cake.className = 'flying-object';
-            document.body.appendChild(cake);
-            setTimeout(() => cake.remove(), 4000);
-            break;
-        
-        case "inflation": // 500/800
-            display.value = calculatedResult * 0.8; // Odejmij 20%
-            showComment("Inflacja: -20%");
-            // Spawn monet
-            for(let i=0; i<10; i++) {
-                setTimeout(() => {
-                    const coin = document.createElement('div');
-                    coin.innerHTML = '🪙';
-                    coin.className = 'falling-coin';
-                    coin.style.left = Math.random() * 100 + 'vw';
-                    coin.style.animationDuration = (Math.random() + 1) + 's';
-                    document.body.appendChild(coin);
-                    setTimeout(() => coin.remove(), 2000);
-                }, i * 100);
-            }
-            break;
-
-        case "police": // 60
-            body.classList.add('police-mode');
-            display.value = text;
-            break;
-
-        case "sixseven": // 67
-            display.value = text;
-            body.style.transform = "scale(1.1)"; // Bass boost
-            setTimeout(() => body.style.transform = "scale(1)", 200);
-            break;
-
-        case "swords": // 1410
-            swordsOverlay.style.opacity = '1';
-            display.value = text;
-            setTimeout(() => swordsOverlay.style.opacity = '0', 3000);
-            break;
-        // ------------------
-
-        case "chaos": // 420.69
+        case "chaos":
             display.value = "WTF?";
             setInterval(() => {
                 display.style.color = '#' + Math.floor(Math.random()*16777215).toString(16);
             }, 100);
             break;
-        case "delay": // 1000
+        case "delay":
             display.value = "...liczę...";
             setTimeout(() => { display.value = calculatedResult; }, 2000);
             break;
-        case "flip": // 999
+        case "flip":
              display.style.transform = "scaleY(-1)";
              display.value = "666";
              break;
