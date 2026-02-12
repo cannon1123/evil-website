@@ -10,7 +10,7 @@
 </head>
 <body class="bg-black min-h-screen flex flex-col items-center justify-center overflow-hidden selection:bg-red-900 selection:text-white">
 
-    <div id="comment-bubble" class="h-8 mb-2 text-center text-gray-500 font-mono text-sm opacity-0 transition-opacity duration-500">
+    <div id="comment-bubble" class="h-8 mb-4 text-center text-gray-500 font-mono text-sm opacity-0 transition-opacity duration-500">
         </div>
 
     <div id="calculator-body" class="bg-[#1c1c1c] p-5 rounded-[40px] shadow-2xl w-[350px] relative transition-transform duration-300">
@@ -18,7 +18,7 @@
         <div id="glitch-overlay" class="absolute inset-0 rounded-[40px] pointer-events-none z-50 mix-blend-overlay opacity-0"></div>
 
         <div class="mb-6 px-2 text-right">
-            <div id="history" class="text-gray-500 text-sm h-5 font-mono mb-1"></div>
+            <div id="history" class="text-gray-600 text-xs h-5 font-mono mb-1"></div>
             <input type="text" id="display" readonly 
                 class="w-full bg-transparent text-white text-6xl font-light text-right outline-none placeholder-gray-700"
                 placeholder="0">
@@ -45,9 +45,9 @@
             <button class="btn btn-num" onclick="append('3')">3</button>
             <button class="btn btn-op" onclick="append('+')">+</button>
 
-            <button class="btn btn-num col-span-2 text-left pl-7" onclick="append('0')">0</button>
+            <button class="btn btn-num col-span-2 justify-start pl-8" onclick="append('0')">0</button>
             <button class="btn btn-num" onclick="append('.')">.</button>
-            <button id="equal-btn" class="btn bg-red-600 text-white hover:bg-red-500 active:scale-95 transition-all" onclick="calculate()">=</button>
+            <button id="equal-btn" class="btn bg-[#ff3b30] text-white hover:bg-red-600 active:scale-95 transition-all" onclick="calculate()">=</button>
         </div>
     </div>
 

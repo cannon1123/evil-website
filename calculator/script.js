@@ -5,19 +5,19 @@ const historyEl = document.getElementById('history');
 const body = document.getElementById('calculator-body');
 
 let currentInput = "";
-let grudgeOffset = 0; // AC nie czyści wszystkiego (pkt 6)
-let escapeCount = 0; // Licznik ucieczek przycisku (max 5)
+let grudgeOffset = 0; // Pkt 6: AC nie czyści wszystkiego
+let escapeCount = 0;  // Licznik ucieczek (max 5)
 let evilMode = false;
 let lastResult = null;
 
-// BAZA DANYCH MEMICZNYCH / PRZEKLĘTYCH LICZB (Twoje 30 punktów)
+// --- TWOJA LISTA 30 PUNKTÓW (MEMOWE LICZBY) ---
 const specialResponses = {
     "69": { text: "nice 😏", action: "normal" },
     "420": { text: "blaze it 🌿", action: "slow" },
     "666": { text: "😈 ERROR", action: "evil" },
     "13": { text: "PECH...", action: "glitch" },
     "404": { text: "Not Found", action: "normal" },
-    "1337": { text: "hacker mode", action: "console" },
+    "1337": { text: "hacker mode", action: "normal" },
     "7": { text: "7 (chyba)", action: "doubt" },
     "0": { text: "nic", action: "crisis" },
     "1": { text: "minimalizm", action: "normal" },
@@ -36,13 +36,14 @@ const specialResponses = {
     "420.69": { text: "CHAOS", action: "chaos" },
     "1000": { text: "zmęczyłem się...", action: "delay" },
     "777": { text: "JACKPOT! (ale wynik zły)", action: "fake_win" },
-    "9999": { text: "za dużo", action: "reset" }
+    "9999": { text: "za dużo", action: "reset" },
+    // Obsługa działań wewnątrz kluczy (specjalna logika w calculate)
 };
 
-// Komentarze pasywno-agresywne (pkt 3, 7, 11)
+// Komentarze pasywno-agresywne (Pkt 3, 7, 11)
 const comments = [
     "serio?", "to w pamięci policz", "marnujesz prąd", 
-    "nudzi mi się", "czy liczby mają sens?", "wynik to iluzja"
+    "nudzi mi się", "czy liczby mają sens?", "wynik to iluzja", "dasz radę w głowie"
 ];
 
 // --- FUNKCJE POMOCNICZE ---
@@ -55,7 +56,7 @@ function showComment(text) {
 
 function append(val) {
     // Pkt 7: Nuda kalkulatora
-    if (currentInput.length > 10 && Math.random() > 0.9) {
+    if (currentInput.length > 12 && Math.random() > 0.8) {
         showComment("przestań klikać...");
         return;
     }
@@ -84,7 +85,7 @@ function pressAC() {
     historyEl.innerText = "";
     
     if (Math.random() > 0.7) {
-        grudgeOffset += (Math.random() > 0.5 ? 0.1 : -0.1); // Zapamiętuje błąd
+        grudgeOffset += (Math.random() > 0.5 ? 0.2 : -0.2); // Zapamiętuje błąd
         showComment("pamiętam to...");
     }
     
@@ -93,6 +94,7 @@ function pressAC() {
     
     // Wyłącz tryb evil jeśli był
     document.body.classList.remove('evil-mode');
+    document.getElementById('glitch-overlay').style.opacity = "0";
 }
 
 // --- LOGIKA UCIEKAJĄCEGO PRZYCISKU (5 ruchów max) ---
@@ -146,7 +148,7 @@ function calculate() {
         return;
     }
 
-    // Pkt 10: Gaslighting (zmiana historii)
+    // Pkt 10: Gaslighting (zmiana historii na inną niż wpisana)
     historyEl.innerText = currentInput + " =";
 
     try {
@@ -158,6 +160,11 @@ function calculate() {
             return;
         }
 
+        // --- SPECIFICZNE DZIAŁANIA Z LISTY (dla stringów) ---
+        if (currentInput === "69*69") { display.value = "skup się"; return; }
+        if (currentInput === "420*0") { display.value = "i tak wyszło nic"; return; }
+        if (currentInput === "666+1") { display.value = "👀"; return; }
+
         // Ewaluacja wyniku
         let result = eval(currentInput);
 
@@ -165,23 +172,25 @@ function calculate() {
         result += grudgeOffset;
 
         // Pkt 1: "Prawie dobrze" (losowy błąd +/- 1)
-        if (Math.random() > 0.8 && !evilMode) {
+        if (Math.random() > 0.8 && !evilMode && Math.abs(result) > 10) {
             result += (Math.random() > 0.5 ? 1 : -1);
             showComment("na pewno dobrze");
         }
 
-        // --- SPRAWDZANIE LISTY 30 PUNKTÓW ---
-        // Sprawdzamy czy wynik lub wpisana komenda jest na liście specjalnej
+        // --- SPRAWDZANIE LISTY 30 PUNKTÓW (PO WYNIKU LUB INPUT) ---
         let magicKey = null;
-        if (specialResponses[currentInput]) magicKey = currentInput; // Np. wpisano "69"
-        else if (specialResponses[result]) magicKey = result;        // Np. wynik to 69
+        
+        // Sprawdzamy, czy input jest w bazie (np. wpisano "69")
+        if (specialResponses[currentInput]) magicKey = currentInput;
+        // Sprawdzamy, czy WYNIK jest w bazie (np. wynik to 69)
+        else if (specialResponses[result]) magicKey = result;
 
         if (magicKey) {
             handleSpecialEffect(magicKey, result);
         } else {
             // Normalny (lub lekko błędny) wynik
-            // Zaokrąglenie długich ułamków, żeby nie rozwaliło ekranu
-            if (result.toString().length > 10) result = result.toFixed(8);
+            // Zaokrąglenie długich ułamków
+            if (result.toString().length > 10) result = parseFloat(result.toFixed(6));
             display.value = result;
         }
 
@@ -206,7 +215,7 @@ function handleSpecialEffect(key, calculatedResult) {
     switch (effect.action) {
         case "slow": // 420
             display.value = "...";
-            setTimeout(() => { display.value = text; }, 2000);
+            setTimeout(() => { display.value = text; }, 1500);
             break;
         case "evil": // 666
             triggerEvilMode();
@@ -226,6 +235,14 @@ function handleSpecialEffect(key, calculatedResult) {
                 display.style.color = '#' + Math.floor(Math.random()*16777215).toString(16);
             }, 100);
             break;
+        case "delay": // 1000
+            display.value = "...liczę...";
+            setTimeout(() => { display.value = calculatedResult; }, 2000);
+            break;
+        case "flip": // 999
+             display.style.transform = "scaleY(-1)";
+             display.value = "666";
+             break;
         default:
             display.value = text;
             break;
